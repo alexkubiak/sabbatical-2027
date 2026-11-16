@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="de"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Reiseplan 2027</title>
+<style>
+body{font-family:-apple-system,Helvetica,Arial,sans-serif;margin:20px;color:#222;background:#fafafa}
+h1{font-size:22px;margin:0 0 6px}
+.legend{margin-bottom:16px;font-size:13px}
+.legend span{display:inline-block;padding:2px 8px;border-radius:4px;margin-right:8px;color:#fff}
+.months{display:flex;flex-wrap:wrap;gap:24px}
+.month{flex:1 1 420px;background:#fff;border:1px solid #ddd;border-radius:8px;padding:12px}
+.month h2{margin:0 0 8px;font-size:18px;text-align:center}
+table{width:100%;border-collapse:collapse;table-layout:fixed}
+th{font-size:12px;color:#666;padding:4px 0}
+td{border:1px solid #eee;vertical-align:top;height:92px;padding:3px;font-size:11px}
+td.empty{background:#f5f5f5}
+td.we .d{color:#c00}
+.d{font-weight:bold;font-size:12px;margin-bottom:2px}
+.f{overflow-wrap:anywhere;border-radius:4px;padding:2px 4px;margin-bottom:2px;color:#fff;line-height:1.25}
+.tk{background:#c8102e}.qf{background:#e0a800;color:#222}.vn{background:#00718f}
+.cont{opacity:.75;border-left:4px solid rgba(0,0,0,.35)}
+td.has{background:#fffbe9}
+.todo{margin-top:24px;background:#fff;border:1px solid #ddd;border-left:5px solid #e67e22;border-radius:8px;padding:12px 18px}
+.todo h2{margin:0 0 8px;font-size:18px}.todo li{margin:6px 0;font-size:14px}
+.todo li.done{color:#999;text-decoration:line-through}
+.cmp{overflow-wrap:anywhere;background:#2e8b57;color:#fff;border-radius:4px;padding:2px 4px;margin-bottom:2px;line-height:1.25}
+.cmp.mid{padding:1px 4px;font-size:10px;opacity:.85}
+</style></head><body>
+<h1>Reiseplan Juli – Oktober 2027</h1>
+<div class="legend"><span class="tk">Turkish Airlines</span><span class="qf">Qantas</span><span class="vn">Vietnam Airlines</span><span style="background:#2e8b57">🚐 Camper: Mighty Campers 2-Berth Deuce</span> &nbsp;↳ = Ankunft am Folgetag (+1)<br>
+<small>MUC München · IST Istanbul · HKG Hongkong · HAN Hanoi · CGK Jakarta · SYD Sydney · AKL Auckland · MEL Melbourne · SIN Singapur</small></div>
+<div class="months" id="m"></div>
+<script>
+const flights=[
+ {d:"2027-07-09",a:"tk",t:"TK1642 MUC → IST",h:"13:00 – 16:50"},
+ {d:"2027-07-09",a:"tk",t:"TK170 IST → HKG",h:"ab 18:10",next:"an 09:25"},
+ {d:"2027-07-13",a:"vn",t:"VN593 HKG → HAN",h:"14:30 – 15:35"},
+ {d:"2027-09-05",a:"qf",t:"QF42 CGK → SYD",h:"ab 20:45",next:"an 06:30"},
+ {d:"2027-09-09",a:"qf",t:"QF145 SYD → AKL",h:"11:40 – 16:50"},
+ {d:"2027-09-28",a:"qf",t:"QF5626 AKL → MEL",h:"09:00 – 10:05<br><i>(Jetstar)</i>"},
+ {d:"2027-09-28",a:"qf",t:"QF35 MEL → SIN",h:"12:05 – 18:15"},
+ {d:"2027-09-30",a:"tk",t:"TK55 SIN → IST",h:"ab 23:05",next:"an 05:20"},
+ {d:"2027-10-01",a:"tk",t:"TK1629 IST → MUC",h:"07:25 – 09:05"},
+];
+const key=(y,m,d)=>`${y}-${String(m).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
+const by={};
+flights.forEach(f=>{
+ (by[f.d]??=[]).push(`<div class="f ${f.a}"><b>${f.t}</b><br>${f.h}${f.next?" (+1)":""}</div>`);
+ if(f.next){const [y,m,d]=f.d.split("-").map(Number);const n=new Date(y,m-1,d+1);
+  (by[key(n.getFullYear(),n.getMonth()+1,n.getDate())]??=[]).push(`<div class="f ${f.a} cont">↳ ${f.t}<br>${f.next}</div>`);}
+});
+for(let d=10;d<=25;d++){
+ const txt=d==10?"<b>🚐 Abholung</b><br>08:00<br>Mighty Deuce":d==25?"<b>🚐 Rückgabe</b><br>16:00":"🚐";
+ (by[key(2027,9,d)]??=[]).push(`<div class="cmp${d==10||d==25?"":" mid"}">${txt}</div>`);
+}
+const names=["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"];
+let html="";
+for(const m of [7,8,9,10]){
+ const first=new Date(2027,m-1,1),days=new Date(2027,m,0).getDate(),off=(first.getDay()+6)%7;
+ html+=`<div class="month"><h2>${names[m-1]} 2027</h2><table><tr>${["Mo","Di","Mi","Do","Fr","Sa","So"].map(x=>`<th>${x}</th>`).join("")}</tr><tr>`;
+ let c=0;for(;c<off;c++)html+=`<td class="empty"></td>`;
+ for(let d=1;d<=days;d++,c++){
+  if(c&&c%7==0)html+="</tr><tr>";
+  const ev=by[key(2027,m,d)]||[];
+  html+=`<td class="${c%7>=5?"we ":""}${ev.length?"has":""}"><div class="d">${d}</div>${ev.join("")}</td>`;
+ }
+ while(c%7){html+=`<td class="empty"></td>`;c++}
+ html+="</tr></table></div>";
+}
+document.getElementById("m").innerHTML=html;
+</script></body></html>
