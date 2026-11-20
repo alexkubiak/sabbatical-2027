@@ -23,9 +23,10 @@ td.has{background:#fffbe9}
 .todo li.done{color:#999;text-decoration:line-through}
 .cmp{overflow-wrap:anywhere;background:#2e8b57;color:#fff;border-radius:4px;padding:2px 4px;margin-bottom:2px;line-height:1.25}
 .cmp.mid{padding:1px 4px;font-size:10px;opacity:.85}
+.htl{overflow-wrap:anywhere;background:#5b6abf;color:#fff;border-radius:4px;padding:2px 4px;margin-bottom:2px;line-height:1.25}
 </style></head><body>
 <h1>Reiseplan Juli – Oktober 2027</h1>
-<div class="legend"><span class="tk">Turkish Airlines</span><span class="qf">Qantas</span><span class="vn">Vietnam Airlines</span><span style="background:#2e8b57">🚐 Camper: Mighty Campers 2-Berth Deuce</span> &nbsp;↳ = Ankunft am Folgetag (+1)<br>
+<div class="legend"><span class="tk">Turkish Airlines</span><span class="qf">Qantas</span><span class="vn">Vietnam Airlines</span><span style="background:#5b6abf">🏨 Hotel</span><span style="background:#2e8b57">🚐 Camper: Mighty Campers 2-Berth Deuce</span> &nbsp;↳ = Ankunft am Folgetag (+1)<br>
 <small>MUC München · IST Istanbul · HKG Hongkong · HAN Hanoi · CGK Jakarta · SYD Sydney · AKL Auckland · MEL Melbourne · SIN Singapur</small></div>
 <div class="months" id="m"></div>
 <script>
@@ -47,6 +48,8 @@ flights.forEach(f=>{
  if(f.next){const [y,m,d]=f.d.split("-").map(Number);const n=new Date(y,m-1,d+1);
   (by[key(n.getFullYear(),n.getMonth()+1,n.getDate())]??=[]).push(`<div class="f ${f.a} cont">↳ ${f.t}<br>${f.next}</div>`);}
 });
+(by[key(2027,9,9)]??=[]).push(`<div class="htl"><b>🏨 Check-in</b><br>Airport Travel Air Motel</div>`);
+(by[key(2027,9,10)]??=[]).push(`<div class="htl"><b>🏨 Check-out</b><br>Airport Travel Air Motel</div>`);
 for(let d=10;d<=25;d++){
  const txt=d==10?"<b>🚐 Abholung</b><br>08:00<br>Mighty Deuce":d==25?"<b>🚐 Rückgabe</b><br>16:00":"🚐";
  (by[key(2027,9,d)]??=[]).push(`<div class="cmp${d==10||d==25?"":" mid"}">${txt}</div>`);
