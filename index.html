@@ -59,7 +59,7 @@ hotels.forEach(h=>{
  for(const t=new Date(a);t<=b;t.setDate(t.getDate()+1)){
   const k=key(2027,t.getMonth()+1,t.getDate());
   const txt=+t==+a?`<b>🏨 Check-in</b><br>${h.s}`:+t==+b?`<b>🏨 Check-out</b><br>${h.s}`:"🏨";
-  (by[k]??=[]).push(`<div class="htl${+t==+a||+t==+b?"":" mid"}" title="${h.n}">${txt}</div>`);
+  (by[k]??=[])[+t==+b?"unshift":"push"](`<div class="htl${+t==+a||+t==+b?"":" mid"}" title="${h.n}">${txt}</div>`);
  }
 });
 for(let d=10;d<=25;d++){
