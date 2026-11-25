@@ -28,7 +28,7 @@ td.has{background:#fffbe9}
 </style></head><body>
 <h1>Reiseplan Juli – Oktober 2027</h1>
 <div class="legend"><span class="tk">Turkish Airlines</span><span class="qf">Qantas</span><span class="vn">Vietnam Airlines</span><span style="background:#5b6abf">🏨 Hotel</span><span style="background:#2e8b57">🚐 Camper: Mighty Campers 2-Berth Deuce</span> &nbsp;↳ = Ankunft am Folgetag (+1)<br>
-<small>MUC München · IST Istanbul · HKG Hongkong · HAN Hanoi · CGK Jakarta · SYD Sydney · AKL Auckland · MEL Melbourne · SIN Singapur<br>🏨 Holiday Inn Express Hong Kong Mongkok (10.–13.07.) · Westlake Lion Boutique Hotel &amp; Spa, Hanoi (13.–17.07.) · Airport Travel Air Motel, Auckland (09.–10.09.)</small></div>
+<small>MUC München · IST Istanbul · HKG Hongkong · HAN Hanoi · CGK Jakarta · SYD Sydney · AKL Auckland · MEL Melbourne · SIN Singapur<br>🏨 Holiday Inn Express Hong Kong Mongkok (10.–13.07.) · Westlake Lion Boutique Hotel &amp; Spa, Hanoi (13.–17.07.) · Airport Travel Air Motel, Auckland (09.–10.09.) · Holiday Inn Express Singapore Clarke Quay by IHG (28.–30.09., Check-out 20:00)</small></div>
 <div class="months" id="m"></div>
 <script>
 const flights=[
@@ -53,12 +53,13 @@ const hotels=[
  {n:"Holiday Inn Express Hong Kong Mongkok",s:"HI Express Mongkok",from:[7,10],to:[7,13]},
  {n:"Westlake Lion Boutique Hotel & Spa",s:"Westlake Lion",from:[7,13],to:[7,17]},
  {n:"Airport Travel Air Motel",s:"Air Motel",from:[9,9],to:[9,10]},
+ {n:"Holiday Inn Express Singapore Clarke Quay by IHG",s:"HI Express Clarke Quay",from:[9,28],to:[9,30],out:"20:00"},
 ];
 hotels.forEach(h=>{
  const a=new Date(2027,h.from[0]-1,h.from[1]),b=new Date(2027,h.to[0]-1,h.to[1]);
  for(const t=new Date(a);t<=b;t.setDate(t.getDate()+1)){
   const k=key(2027,t.getMonth()+1,t.getDate());
-  const txt=+t==+a?`<b>🏨 Check-in</b><br>${h.s}`:+t==+b?`<b>🏨 Check-out</b><br>${h.s}`:"🏨";
+  const txt=+t==+a?`<b>🏨 Check-in</b><br>${h.s}`:+t==+b?`<b>🏨 Check-out${h.out?" "+h.out:""}</b><br>${h.s}`:"🏨";
   (by[k]??=[])[+t==+b?"unshift":"push"](`<div class="htl${+t==+a||+t==+b?"":" mid"}" title="${h.n}">${txt}</div>`);
  }
 });
